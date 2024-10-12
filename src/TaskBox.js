@@ -19,7 +19,7 @@ export function TaskBox({obj, receiveFun, indexOfTask}) {
         // receiveFun() تم الإستغناء عن ارسال أبروبس ليتلقى فنكشن
 
         let theCheck = theToDo.map((check, id) => {
-            if (id == indexOfTask) {
+            if (id === indexOfTask) {
                 check.isCompleted = !check.isCompleted;
             };
 
@@ -74,7 +74,7 @@ export function TaskBox({obj, receiveFun, indexOfTask}) {
     function handleUpdate() {
 
         let updates = theToDo.map((toDo, i) => {
-            if (i == indexOfTask) {
+            if (i === indexOfTask) {
                 return {...toDo, title: updateTheToDo.title, desc: updateTheToDo.desc};
             } else {
                 return toDo;

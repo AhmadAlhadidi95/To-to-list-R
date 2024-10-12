@@ -35,10 +35,10 @@ export function Container() {
     });
 
     switch (true) {
-        case (toDosToBeRerended == "complete"):
+        case (toDosToBeRerended === "complete"):
             toDosToBeRerended = completeToDos;
             break;
-        case (toDosToBeRerended == "notComplete"):
+        case (toDosToBeRerended === "notComplete"):
             toDosToBeRerended = notCompleteToDos;
             break;
         default:
