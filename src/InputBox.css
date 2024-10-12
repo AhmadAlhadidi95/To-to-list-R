@@ -1,0 +1,53 @@
+.inputBox {
+    width: 100%;
+    padding: 10px;
+    border: 3px solid var(--color_2);
+    border-radius: var(--bow);
+    box-shadow: var(--shadow);
+
+    & button {
+        background-color: var(--color_2);
+        padding: 8px 12px;
+        margin-right: 8px;
+        font-size: 14px;
+        color: var(--fontColor);
+        font-weight: bold;
+        border: 1px solid var(--black);
+        border-radius: var(--bow);
+        box-shadow: var(--shadow);
+        cursor: pointer;
+        transition: var(--smooth);
+    }
+
+    & button:hover {
+        background-color: var(--color_3);
+        color: var(--black);
+    }
+    & button:disabled {
+        cursor: no-drop;
+        background-color: var(--black);
+        color: var(--fontColor);
+        text-decoration: line-through;
+    }
+
+    & input {
+        width: calc(100% - 70px);
+        background-color: var(--black);
+        padding: 10px 6px;
+        font-size: 14px;
+        color: var(--fontColor);
+        font-weight: bold;
+        border-radius: var(--bow);
+        border: none;
+        box-shadow: var(--shadow);
+        outline: none;
+    }
+    & input::placeholder {
+        color: var(--color_3);
+    }
+    & input:hover::placeholder,
+    & input:focus::placeholder {
+        opacity: 0;
+        transition: var(--smooth);
+    }
+}

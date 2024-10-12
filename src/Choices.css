@@ -1,0 +1,29 @@
+ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 4px;
+    margin: 10px 0;
+
+    & li {
+        background-color: var(--black);
+        padding: 8px;
+        border-radius: var(--bow);
+        font-weight: bold;
+        box-shadow: var(--shadow);
+        cursor: pointer;
+        transition: var(--smooth);
+    }
+    & li:hover {
+        background-color: var(--color_2);
+    }
+}
+ul.notComplete li:nth-of-type(1) {
+    background-color: var(--color_2);
+}
+ul.complete li:nth-of-type(2) {
+    background-color: var(--color_2);
+}
+ul.all li:nth-of-type(3) {
+    background-color: var(--color_2);
+}

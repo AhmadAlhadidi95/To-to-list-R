@@ -1,0 +1,57 @@
+.task-box {
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 3px solid var(--color_2);
+    border-radius: var(--bow);
+    box-shadow: var(--shadow);
+
+    .right {
+        flex: 1;
+        text-align: end;
+
+        & strong {
+            display: block;
+            padding-bottom: 6px;
+            font-size: 20px;
+            border-bottom: 1px solid var(--color_2);
+        }
+
+        & p {
+            margin-top: 4px;
+            font-size: 18px;
+        }
+    }
+
+    .left {
+        flex: 1;
+
+        & span {
+            background-color: var(--black);
+            width: 3rem;
+            height: 3rem;
+            display: inline-block;
+            text-align: center;
+            line-height: 48px;
+            border: 1px solid var(--color_2);
+            border-radius: 50%;
+            box-shadow: var(--shadow);
+            transition: var(--smooth);
+            cursor: pointer;
+        }
+        & span:not(:last-of-type) {
+            margin-right: 6px;
+        }
+        & span.delete:hover {
+            background-color: rgb(211, 0, 0);
+        }
+        & span.edit:hover {
+            background-color: rgb(211, 130, 0);
+        }
+        & span.check:hover {
+            background-color: var(--color_1);
+        }
+    }
+}

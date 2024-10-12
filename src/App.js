@@ -1,23 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import { TheToDo } from './contexts/TheToDo';
+import { Container } from './Container';
+import { useState } from "react";
+
+let myToDo = [
+  // {
+  //     title: "قرأة كتاب",
+  //     desc: "قرأة عشر صفحات",
+  //     isCompleted: false,
+  // },
+  // {
+  //     title: "أكل الفواكه",
+  //     desc: "خمسة تين وإثنان تفاح",
+  //     isCompleted: false,
+  // },
+];
 
 function App() {
+
+  const [theToDo, setTheToDo] = useState(myToDo);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <TheToDo.Provider value={{theToDo, setTheToDo}}>
+        <Container/>
+      </TheToDo.Provider>
     </div>
   );
 }
