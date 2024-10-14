@@ -2,8 +2,9 @@ import "./Container.css";
 import "./Choices.css"
 import { TaskBox } from "./TaskBox";
 import { InputBox } from "./InputBox";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useMemo } from "react";
 import { TheToDo } from "./contexts/TheToDo";
+import { TheToster } from "./contexts/TheToster";
 
 // let myToDo = [
 //     {
@@ -20,19 +21,29 @@ import { TheToDo } from "./contexts/TheToDo";
 
 export function Container() {
 
-    let {theToDo, setTheToDo} = useContext(TheToDo); // هذه تم احضارها من الكونتستس
+    const {theToDo, setTheToDo} = useContext(TheToDo); // هذه تم احضارها من الكونتستس
     // const [theToDo, setTheToDo] = useState(myToDo);
+    const {showOrHideFunc} = useContext(TheToster);
     const [theInput, setTheInput] = useState("");
     const [typeOfTask, setTypeOfTask] = useState("all");
 
     let toDosToBeRerended = typeOfTask;
 
-    let completeToDos = theToDo.filter((toDo) => {
-        return toDo.isCompleted;
-    });
-    let notCompleteToDos = theToDo.filter((toDo) => {
-        return !toDo.isCompleted;
-    });
+    let completeToDos = useMemo(() => { // rerender تحفظ ما بداخلها، بمعنى لا يستدعي في كل useMemo ال
+
+        return theToDo.filter((toDo) => {
+            return toDo.isCompleted;
+        });
+
+    }, [theToDo]); // وهنا في داخل الأري نضع الشيء الذي يستدعى في حالة حدوثه
+
+    let notCompleteToDos = useMemo(() => {
+
+        return theToDo.filter((toDo) => {
+            return !toDo.isCompleted;
+        });
+
+    }, [theToDo]);
 
     switch (true) {
         case (toDosToBeRerended === "complete"):
@@ -95,6 +106,8 @@ export function Container() {
         localStorage.setItem("MyToDo", JSON.stringify(updateTask));
 
         setTheInput("");
+
+        showOrHideFunc("تم إضافة المهمة بنجاح");
     };
 
     // let storageToDo = JSON.parse(localStorage.getItem("MyToDo"));

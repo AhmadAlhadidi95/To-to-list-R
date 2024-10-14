@@ -3,11 +3,13 @@ import "./Model.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faCheck, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { TheToDo } from "./contexts/TheToDo";
+import { TheToster } from "./contexts/TheToster";
 import { useContext, useState, useEffect, useRef } from "react";
 
 export function TaskBox({obj, receiveFun, indexOfTask}) {
 
     const {theToDo, setTheToDo} = useContext(TheToDo);
+    const {showOrHideFunc} = useContext(TheToster);
 
     const [updateTheToDo, setUpdateTheToDo] = useState({title: obj.title, desc: obj.desc});
     const [theDeleteModel, setTheDeleteModel] = useState(false);
@@ -22,6 +24,8 @@ export function TaskBox({obj, receiveFun, indexOfTask}) {
             if (id === indexOfTask) {
                 check.isCompleted = !check.isCompleted;
             };
+
+            check.isCompleted ? showOrHideFunc("تم إنجاز المهمة") : showOrHideFunc("لم يتم إنجاز المهمة");
 
             return check;
         });
@@ -59,6 +63,8 @@ export function TaskBox({obj, receiveFun, indexOfTask}) {
 
         handleCloseDeleteModel();
 
+        showOrHideFunc("تم الحذف بنجاح");
+
     };
 
     function handleShowUpdateModel() {
@@ -87,9 +93,12 @@ export function TaskBox({obj, receiveFun, indexOfTask}) {
 
         handleCloseUpdateModel();
 
+        showOrHideFunc("تم التعديل/الإضافة بنجاح");
+
     };
 
     useEffect(() => {
+
         function handler(event) {
             if (elementRef.current && !elementRef.current.contains(event.target)) {
                 handleCloseDeleteModel();
@@ -98,7 +107,8 @@ export function TaskBox({obj, receiveFun, indexOfTask}) {
         };
 
         document.addEventListener("mousedown", handler);
-    });
+
+    }, []);
 
     return (
         <>

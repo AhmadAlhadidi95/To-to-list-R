@@ -1,0 +1,9 @@
+.toster {
+    background-image: linear-gradient(40deg, var(--color_1), var(--black));
+    padding: 10px;
+    border-radius: var(--bow);
+    box-shadow: var(--shadow);
+    position: absolute;
+    right: 12px;
+    top: 12px;
+}
