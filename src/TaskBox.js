@@ -2,14 +2,16 @@ import "./TaskBox.css";
 import "./Model.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faCheck, faEdit } from "@fortawesome/free-solid-svg-icons";
-import { TheToDo } from "./contexts/TheToDo";
-import { TheToster } from "./contexts/TheToster";
+import { useToDo } from "./contexts/TheToDo";
 import { useContext, useState, useEffect, useRef } from "react";
+import { useToast } from "./contexts/TheToast";
 
-export function TaskBox({obj, receiveFun, indexOfTask}) {
+export function TaskBox({obj, indexOfTask}) {
 
-    const {theToDo, setTheToDo} = useContext(TheToDo);
-    const {showOrHideFunc} = useContext(TheToster);
+    // const {theToDo, setTheToDo} = useContext(TheToDo);
+    const {toDos, dispatch} = useToDo();
+
+    const {showOrHideFunc} = useToast();
 
     const [updateTheToDo, setUpdateTheToDo] = useState({title: obj.title, desc: obj.desc});
     const [theDeleteModel, setTheDeleteModel] = useState(false);
@@ -18,22 +20,25 @@ export function TaskBox({obj, receiveFun, indexOfTask}) {
     const elementRef = useRef();
 
     function handleCheck() {
-        // receiveFun() تم الإستغناء عن ارسال أبروبس ليتلقى فنكشن
 
-        let theCheck = theToDo.map((check, id) => {
-            if (id === indexOfTask) {
-                check.isCompleted = !check.isCompleted;
-            };
+        // let theCheck = theToDo.map((check, id) => {
+        //     if (id === indexOfTask) {
+        //         check.isCompleted = !check.isCompleted;
+        //     };
 
-            check.isCompleted ? showOrHideFunc("تم إنجاز المهمة") : showOrHideFunc("لم يتم إنجاز المهمة");
+        //     check.isCompleted ? showOrHideFunc("تم إنجاز المهمة") : showOrHideFunc("لم يتم إنجاز المهمة بعد");
 
-            return check;
-        });
+        //     return check;
+        // });
 
-        setTheToDo (theCheck);
+        // setTheToDo (theCheck);
 
-        localStorage.setItem("MyToDo", JSON.stringify(theCheck));
+        // localStorage.setItem("MyToDo", JSON.stringify(theCheck));
 
+        dispatch({type: "checkToggle", payload: indexOfTask});
+
+        !toDos[indexOfTask].isCompleted ? showOrHideFunc("تم إنجاز المهمة") : showOrHideFunc("لم يتم إنجاز المهمة بعد");
+        
     };
 
     function handleShowDeleteModel() {
@@ -48,19 +53,21 @@ export function TaskBox({obj, receiveFun, indexOfTask}) {
     };
     function handleDelete() {
         
-        let updateTheDelete = theToDo.filter((del, id) => {
-            // if (id == indexOfTask) {
-            //     return false
-            // } else {
-            //     return true
-            // }
-            return id != indexOfTask; // اختصار لما سبق
-        });
+        // let updateTheDelete = theToDo.filter((del, id) => {
+        //     // if (id == indexOfTask) {
+        //     //     return false
+        //     // } else {
+        //     //     return true
+        //     // }
+        //     return id != indexOfTask; // اختصار لما سبق
+        // });
 
-        setTheToDo(updateTheDelete);
+        // setTheToDo(updateTheDelete);
 
-        localStorage.setItem("MyToDo", JSON.stringify(updateTheDelete));
+        // localStorage.setItem("MyToDo", JSON.stringify(updateTheDelete));
 
+        dispatch({type: "delete", payload: indexOfTask});
+        
         handleCloseDeleteModel();
 
         showOrHideFunc("تم الحذف بنجاح");
@@ -79,17 +86,19 @@ export function TaskBox({obj, receiveFun, indexOfTask}) {
     };
     function handleUpdate() {
 
-        let updates = theToDo.map((toDo, i) => {
-            if (i === indexOfTask) {
-                return {...toDo, title: updateTheToDo.title, desc: updateTheToDo.desc};
-            } else {
-                return toDo;
-            }
-        });
+        // let updates = theToDo.map((toDo, i) => {
+        //     if (i === indexOfTask) {
+        //         return {...toDo, title: updateTheToDo.title, desc: updateTheToDo.desc};
+        //     } else {
+        //         return toDo;
+        //     }
+        // });
 
-        setTheToDo(updates);
+        // setTheToDo(updates);
 
-        localStorage.setItem("MyToDo", JSON.stringify(updates));
+        // localStorage.setItem("MyToDo", JSON.stringify(updates));
+
+        dispatch({type: "update", payload: {updateTheToDo, indexOfTask}})
 
         handleCloseUpdateModel();
 

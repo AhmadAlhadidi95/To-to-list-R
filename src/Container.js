@@ -2,28 +2,15 @@ import "./Container.css";
 import "./Choices.css"
 import { TaskBox } from "./TaskBox";
 import { InputBox } from "./InputBox";
-import { useContext, useState, useEffect, useMemo } from "react";
-import { TheToDo } from "./contexts/TheToDo";
-import { TheToster } from "./contexts/TheToster";
-
-// let myToDo = [
-//     {
-//         title: "قرأة كتاب",
-//         desc: "قرأة عشر صفحات",
-//         isCompleted: false,
-//     },
-//     {
-//         title: "أكل الفواكه",
-//         desc: "خمسة تين وإثنان تفاح",
-//         isCompleted: false,
-//     },
-// ];
+import { useState, useEffect, useMemo } from "react";
+import { useToDo } from "./contexts/TheToDo";
+import { useToast } from "./contexts/TheToast";
 
 export function Container() {
 
-    const {theToDo, setTheToDo} = useContext(TheToDo); // هذه تم احضارها من الكونتستس
-    // const [theToDo, setTheToDo] = useState(myToDo);
-    const {showOrHideFunc} = useContext(TheToster);
+    const {toDos, dispatch} = useToDo();
+
+    const {showOrHideFunc} = useToast();
     const [theInput, setTheInput] = useState("");
     const [typeOfTask, setTypeOfTask] = useState("all");
 
@@ -31,19 +18,19 @@ export function Container() {
 
     let completeToDos = useMemo(() => { // rerender تحفظ ما بداخلها، بمعنى لا يستدعي في كل useMemo ال
 
-        return theToDo.filter((toDo) => {
+        return toDos.filter((toDo) => {
             return toDo.isCompleted;
         });
 
-    }, [theToDo]); // وهنا في داخل الأري نضع الشيء الذي يستدعى في حالة حدوثه
+    }, [toDos]); // وهنا في داخل الأري نضع الشيء الذي يستدعى في حالة حدوثه
 
     let notCompleteToDos = useMemo(() => {
 
-        return theToDo.filter((toDo) => {
+        return toDos.filter((toDo) => {
             return !toDo.isCompleted;
         });
 
-    }, [theToDo]);
+    }, [toDos]);
 
     switch (true) {
         case (toDosToBeRerended === "complete"):
@@ -53,7 +40,7 @@ export function Container() {
             toDosToBeRerended = notCompleteToDos;
             break;
         default:
-            toDosToBeRerended = theToDo
+            toDosToBeRerended = toDos
             break;
     };
     
@@ -84,8 +71,10 @@ export function Container() {
 
     useEffect(() => {
 
-        let storageToDo = JSON.parse(localStorage.getItem("MyToDo")) || []; // فأحضر أري فارغة localStorage في حال لا يوجد شيء في الل
-        setTheToDo(storageToDo);
+        // let storageToDo = JSON.parse(localStorage.getItem("MyToDo")) || []; // فأحضر أري فارغة localStorage في حال لا يوجد شيء في الل
+        // setTheToDo(storageToDo);
+
+        dispatch({type: "get"});
         
     }, []); // في حال تركت أقواس الأري فارغة فهي تعمل مرة واحدة عند فتح الصفحة، أما في حال وضع شيء في داخلهم فهي تعمل أثناء تغير ذلك الشيء فقط useEffect ال
 
@@ -94,19 +83,20 @@ export function Container() {
     };
     
     function addTask() {
-        let newTask = {
-            title: theInput,
-            desc: "",
-            isCompleted: false,
-        };
+        // let newTask = {
+        //     title: theInput,
+        //     desc: "",
+        //     isCompleted: false,
+        // };
 
-        let updateTask = [...theToDo, newTask];
-        setTheToDo(updateTask);
+        // let updateTask = [...theToDo, newTask];
+        // setTheToDo(updateTask);
 
-        localStorage.setItem("MyToDo", JSON.stringify(updateTask));
+        // localStorage.setItem("MyToDo", JSON.stringify(updateTask));
+
+        dispatch({type: "add", payload: {newTitle: theInput}});
 
         setTheInput("");
-
         showOrHideFunc("تم إضافة المهمة بنجاح");
     };
 
